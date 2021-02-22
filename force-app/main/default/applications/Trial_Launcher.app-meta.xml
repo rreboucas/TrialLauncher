@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description>Create customized demo orgs for your Sales Engineering teams based on which features and Products they need.</description>
+    <formFactors>Small</formFactors>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>Trial Launcher</label>
+    <navType>Standard</navType>
+    <tabs>Demo_Template__c</tabs>
+    <tabs>Demo_Product__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>ISV_Art_of_the_Possible_UtilityBar</utilityBar>
+</CustomApplication>
