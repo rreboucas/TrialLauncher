@@ -14,5 +14,5 @@
     <tabs>Demo_Template__c</tabs>
     <tabs>Demo_Product__c</tabs>
     <uiType>Lightning</uiType>
-    <utilityBar>ISV_Art_of_the_Possible_UtilityBar</utilityBar>
+    <utilityBar></utilityBar>
 </CustomApplication>
