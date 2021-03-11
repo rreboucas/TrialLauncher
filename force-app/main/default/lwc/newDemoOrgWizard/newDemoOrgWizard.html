@@ -1,23 +1,37 @@
 <template>
     <div class="parent">
     <lightning-card>
-        <p class="slds-p-horizontal_small">Card Body (custom component)</p>
+        
+        <header class="slds-modal__header">
+            <div class="title">
+                <h2 id="modal-heading-01" >New ISV Demo Org</h2>
+            </div>
+          </header>
 
-        <div slot="footer">
-            <lightning-layout horizontal-align="spread">
-                <lightning-layout-item padding="around-small">
-                    <lightning-button label="Previous" title="Non-primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+        <div class="body">
+
+            <p class="slds-p-horizontal_small">Card Body (currentStep: {selectedStep})</p>
+
+        </div>
+        <div class="footer" slot="footer">
+            <lightning-layout pull-to-boundary="medium">
+                <lightning-layout-item padding="" size="2">
+                    <template if:true={hasPreviousStep}>
+                        <lightning-button label="Previous" title="Non-primary action" onclick={handlePrevious} class="slds-m-left_x-small"></lightning-button>
+                    </template>
                 </lightning-layout-item>
-                <lightning-layout-item padding="around-small">
-                    <lightning-progress-indicator current-step="3" type="base" has-error="true" variant="base">
-                        <lightning-progress-step label="Step 1" value="1"></lightning-progress-step>
-                        <lightning-progress-step label="Step 2" value="2"></lightning-progress-step>
-                        <lightning-progress-step label="Step 3" value="3"></lightning-progress-step>
-                        <lightning-progress-step label="Step 4" value="4"></lightning-progress-step>
-                    </lightning-progress-indicator>
+                <lightning-layout-item size="8">
+
+                        <lightning-progress-indicator current-step={selectedStep} type="base"  variant="base">
+                            <lightning-progress-step label="Step 1" onstepfocus={selectStep1} value="Step1"></lightning-progress-step>
+                            <lightning-progress-step label="Step 2" onstepfocus={selectStep2} value="Step2"></lightning-progress-step>
+                            <lightning-progress-step label="Step 3" onstepfocus={selectStep3} value="Step3"></lightning-progress-step>
+                            <lightning-progress-step label="Step 4" onstepfocus={selectStep4} value="Step4"></lightning-progress-step>
+                        </lightning-progress-indicator>
+
                 </lightning-layout-item>
-                <lightning-layout-item padding="around-small">
-                    <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+                <lightning-layout-item size="2">
+                    <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext} class="slds-m-left_x-small"></lightning-button>
                 </lightning-layout-item>
             </lightning-layout>
         </div>

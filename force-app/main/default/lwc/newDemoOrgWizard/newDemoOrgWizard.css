@@ -8,5 +8,15 @@
     height: 18rem;
     max-height: 100%;
     min-height: 18rem;
+    max-width: 48rem;
     position: relative;
+}
+.body {
+    
+    min-height: 27rem;
+    
+}
+.title {
+    font-weight: inherit;
+    font-size: 1.2em;
 }
