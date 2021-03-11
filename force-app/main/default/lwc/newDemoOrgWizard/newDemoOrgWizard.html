@@ -1,0 +1,27 @@
+<template>
+    <div class="parent">
+    <lightning-card>
+        <p class="slds-p-horizontal_small">Card Body (custom component)</p>
+
+        <div slot="footer">
+            <lightning-layout horizontal-align="spread">
+                <lightning-layout-item padding="around-small">
+                    <lightning-button label="Previous" title="Non-primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small">
+                    <lightning-progress-indicator current-step="3" type="base" has-error="true" variant="base">
+                        <lightning-progress-step label="Step 1" value="1"></lightning-progress-step>
+                        <lightning-progress-step label="Step 2" value="2"></lightning-progress-step>
+                        <lightning-progress-step label="Step 3" value="3"></lightning-progress-step>
+                        <lightning-progress-step label="Step 4" value="4"></lightning-progress-step>
+                    </lightning-progress-indicator>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small">
+                    <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        
+    </lightning-card>
+    </div>
+</template>
