@@ -1,0 +1,11 @@
+<template>
+    <div>
+        Enter details about your demo:
+    </div>
+    <br>
+    <div class="slds-p-bottom_large slds-p-left_large">
+            <template if:true={hasData} for:each={fieldsList} for:item="field">
+                <lightning-input key={field.Field_API_Name__c} type={field.Field_Type__c} label={field.Label}></lightning-input>
+            </template>
+        </div>
+</template>

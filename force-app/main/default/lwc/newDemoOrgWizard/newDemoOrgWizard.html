@@ -10,7 +10,21 @@
 
         <div class="body">
 
-            <p class="slds-p-horizontal_small">Card Body (currentStep: {selectedStep})</p>
+            <template if:true={isStep1}>
+                <c-step1-new-demo-org-wizard></c-step1-new-demo-org-wizard>
+            </template>
+
+            <template if:true={isStep2}>
+                Step 2
+            </template>
+
+            <template if:true={isStep3}>
+                Step 3
+            </template>
+
+            <template if:true={isStep4}>
+                Step 4
+            </template>
 
         </div>
         <div class="footer" slot="footer">
