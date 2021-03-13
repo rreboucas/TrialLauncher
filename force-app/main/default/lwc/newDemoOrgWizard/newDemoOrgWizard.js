@@ -1,3 +1,4 @@
+import ApiName from '@salesforce/schema/CaseStatus.ApiName';
 import { LightningElement, api, wire } from 'lwc';
 
 export default class NewDemoOrgWizard extends LightningElement {
@@ -7,11 +8,31 @@ export default class NewDemoOrgWizard extends LightningElement {
     isStep2 = false;
     isStep3 = false;
     isStep4 = false;
+    valuesMap = new Map();
+    disableNext = true;
 
     connectedCallback() {
-        
-
+        //this.valuesMap = new Map();
     }
+
+    storeFieldValues(event) {
+        
+        console.log('newDemoOrgWizard.js - storeFieldValues event handler');
+        let aPIName = event.detail.fieldAPIName;
+        console.log('newDemoOrgWizard.js - storeFieldValues event handler - aPIName: ' + aPIName);
+
+        let fValue = event.detail.fieldValue;
+        console.log('newDemoOrgWizard.js - storeFieldValues event handler - fValue: ' + fValue);
+
+        if (aPIName && fValue){
+            this.valuesMap.set(aPIName, fValue);
+            console.log('newDemoOrgWizard.js - storeFieldValues event handler - valuesMap: ' + this.valuesMap);
+            if (this.valuesMap.size === event.detail.numFields)
+                this.disableNext = false;
+        }   
+            
+    }
+
 
     handleNext(event) {
         var getselectedStep = this.selectedStep;

@@ -1,11 +1,17 @@
 <template>
-    <div>
-        Enter details about your demo:
-    </div>
-    <br>
-    <div class="slds-p-bottom_large slds-p-left_large">
-            <template if:true={hasData} for:each={fieldsList} for:item="field">
-                <lightning-input key={field.Field_API_Name__c} type={field.Field_Type__c} label={field.Label}></lightning-input>
-            </template>
+    <div class="slds-p-bottom_large slds-p-left_large parent">
+        <div class="slds-p-bottom_large">
+            Enter details about your demo:
         </div>
+        <br>
+        <div class="">
+            <ul>
+                <template if:true={hasData} for:each={fieldsList} for:item="field">
+                    <li class="slds-p-bottom_small" key={field.Field_API_Name__c}>
+                        <lightning-input name={field.Field_API_Name__c} key={field.Field_API_Name__c} type={field.Field_Type__c} label={field.Label} onblur={storeFieldValue}></lightning-input>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
 </template>

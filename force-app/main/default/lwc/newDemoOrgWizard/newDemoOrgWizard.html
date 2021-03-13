@@ -11,7 +11,7 @@
         <div class="body">
 
             <template if:true={isStep1}>
-                <c-step1-new-demo-org-wizard></c-step1-new-demo-org-wizard>
+                <c-step1-new-demo-org-wizard onvaluechanged={storeFieldValues}></c-step1-new-demo-org-wizard>
             </template>
 
             <template if:true={isStep2}>
@@ -45,7 +45,7 @@
 
                 </lightning-layout-item>
                 <lightning-layout-item size="2">
-                    <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext} class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext} disabled={disableNext} class="slds-m-left_x-small"></lightning-button>
                 </lightning-layout-item>
             </lightning-layout>
         </div>
