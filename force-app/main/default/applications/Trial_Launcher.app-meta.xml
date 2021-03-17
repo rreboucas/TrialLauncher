@@ -11,8 +11,8 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <label>Trial Launcher</label>
     <navType>Standard</navType>
+    <tabs>Demo_Org__c</tabs>
     <tabs>Demo_Template__c</tabs>
     <tabs>Demo_Product__c</tabs>
     <uiType>Lightning</uiType>
-    <utilityBar></utilityBar>
 </CustomApplication>

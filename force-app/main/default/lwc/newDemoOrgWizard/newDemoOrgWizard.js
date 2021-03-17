@@ -15,6 +15,18 @@ export default class NewDemoOrgWizard extends LightningElement {
         //this.valuesMap = new Map();
     }
 
+    storeTemplateInfo(event) {
+        let tempId = event.detail.templateId;
+        console.log('newDemoOrgWizard.js - storeFieldValues event handler - tempId: ' + tempId);
+        if (tempId)
+            this.baseTemplateId = tempId;
+
+        let tempName = event.detail.templateName;
+        console.log('newDemoOrgWizard.js - storeFieldValues event handler - tempName: ' + tempName);
+        if (tempName)
+            this.baseTemplateId = tempName;
+    }
+
     storeFieldValues(event) {
         
         console.log('newDemoOrgWizard.js - storeFieldValues event handler');
@@ -24,9 +36,12 @@ export default class NewDemoOrgWizard extends LightningElement {
         let fValue = event.detail.fieldValue;
         console.log('newDemoOrgWizard.js - storeFieldValues event handler - fValue: ' + fValue);
 
+
         if (aPIName && fValue){
             this.valuesMap.set(aPIName, fValue);
             console.log('newDemoOrgWizard.js - storeFieldValues event handler - valuesMap: ' + this.valuesMap);
+            console.log('newDemoOrgWizard.js - storeFieldValues event handler - valuesMap.size: ' + this.valuesMap.size);
+            console.log('newDemoOrgWizard.js - storeFieldValues event handler - event.detail.numFields: ' + event.detail.numFields);
             if (this.valuesMap.size === event.detail.numFields)
                 this.disableNext = false;
         }   

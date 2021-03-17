@@ -1,0 +1,27 @@
+<template>
+    <div class="slds-p-bottom_large slds-p-left_large parent">
+        <div class="slds-p-bottom_large">
+            Select the Product(s)/Feature(s) needed for your demo:
+        </div>
+        <br>
+        <div class="">  
+            <lightning-layout>
+                <lightning-layout-item>
+                    <template if:true={hasData} for:each={featuresList} for:item="feature">
+                        <lightning-button-stateful
+                            label-when-off={feature.Name}
+                            label-when-on={feature.Name}
+                            key={feature.Demo_Template__c}
+                            label-when-hover="Unselect"
+                            icon-name-when-off="utility:add"
+                            icon-name-when-on="utility:check"
+                            icon-name-when-hover="utility:close"
+                            variant="neutral"
+                            onclick={handleClick}>
+                        </lightning-button-stateful>
+                    </template>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </div>
+</template>

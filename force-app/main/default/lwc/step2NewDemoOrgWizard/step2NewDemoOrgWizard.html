@@ -1,0 +1,17 @@
+<template>
+    <div class="slds-p-bottom_large slds-p-left_large parent">
+        <div class="slds-p-bottom_large">
+            Select the base Product for your demo:
+        </div>
+        <br>
+        <div class="">  
+            <lightning-combobox
+            name="progress"
+            label="Status"
+            value={value}
+            placeholder="Select an option..."
+            options={options}
+            onchange={handleChange} ></lightning-combobox>
+        </div>
+    </div>
+</template>

@@ -15,11 +15,11 @@
             </template>
 
             <template if:true={isStep2}>
-                Step 2
+                <c-step2-new-demo-org-wizard onbasetemplateselected={storeTemplateInfo}></c-step2-new-demo-org-wizard>
             </template>
 
             <template if:true={isStep3}>
-                Step 3
+                <c-step3-new-demo-org-wizard ></c-step3-new-demo-org-wizard>
             </template>
 
             <template if:true={isStep4}>
