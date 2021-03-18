@@ -1,14 +1,17 @@
 <template>
-    <lightning-button-stateful
-        label-when-off={featurename}
-        label-when-on={featurename}
-        key={templateid}
-        label-when-hover="Unselect"
-        icon-name-when-off="utility:add"
-        icon-name-when-on="utility:check"
-        icon-name-when-hover="utility:close"
-        selected={isSelected}
-        variant={variant}
-        onclick={handleClick}>
-    </lightning-button-stateful>
+<span>
+        <lightning-button-stateful
+            data-item={templateid}
+            label-when-off={featurename}
+            label-when-on={featurename}
+            key={templateid}
+            label-when-hover="Unselect"
+            icon-name-when-off="utility:add"
+            icon-name-when-on="utility:check"
+            icon-name-when-hover="utility:close"
+            selected={isSelected}
+            variant={variant}
+            onclick={handleClick}>
+        </lightning-button-stateful>
+    </span>
 </template>

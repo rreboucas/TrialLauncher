@@ -1,14 +1,18 @@
 <template>
     <div class="slds-p-bottom_large slds-p-left_large parent">
-        <div class="slds-p-bottom_large">
+        <div class="slds-p-bottom_large header">
             Select the Product(s)/Feature(s) needed for your demo:
         </div>
         <br>
-        <div class="">  
-            <lightning-layout>
+        <div class="slds-text-body_small slds-text-color_weak slds-text-align_center">
+            {numSelected} Product(s)/Feature(s) selected
+        </div>
+        <br>
+        <div class="features">  
+            <lightning-layout multiple-rows>
                 <lightning-layout-item>
                     <template if:true={hasData} for:each={featuresList} for:item="feature" class="slds-p-around_xx-small">
-                        <c-button-stateful key={feature.Demo_Template__c} featurename={feature.Name} templateid={feature.Demo_Template__c}></c-button-stateful>
+                        <c-button-stateful onfeatureselected={storeSelectedFeature} key={feature.Demo_Template__c} featurename={feature.Name} templateid={feature.Demo_Template__c}></c-button-stateful>
                     </template>
                 </lightning-layout-item>
             </lightning-layout>

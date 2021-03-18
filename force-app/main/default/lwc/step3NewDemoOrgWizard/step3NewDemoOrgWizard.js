@@ -6,6 +6,7 @@ export default class Step3NewDemoOrgWizard extends LightningElement {
     hasData;
     featuresList;
     numOfFeatures;
+    numSelected = 0;
     
     featuresMap = new Map();
 
@@ -25,7 +26,29 @@ export default class Step3NewDemoOrgWizard extends LightningElement {
         }
     }
 
-    
+    storeSelectedFeature(event) {
+        
+        console.log('newDemoOrgWizard.js - storeFieldValues event handler');
+        let fName = event.detail.templateName;
+        console.log('step3NewDemoOrgWizard.js - storeSelectedFeature event handler - fName: ' + fName);
+
+        let fTemplate = event.detail.templateId;
+        console.log('step3NewDemoOrgWizard.js - storeSelectedFeature event handler - fTemplate: ' + fTemplate);
+
+        let op = event.detail.operation;
+        console.log('step3NewDemoOrgWizard.js - storeSelectedFeature event handler - op: ' + op);
+
+        switch (op) {
+            case 'add':
+                this.featuresMap.set(fTemplate, fName);
+                this.numSelected = this.featuresMap.size;
+              break;
+            case 'remove':
+                this.featuresMap.delete(fTemplate);
+                this.numSelected = this.featuresMap.size;
+            break;
+        }
+    }
 
     
 }
