@@ -6,6 +6,7 @@ export default class Step3NewDemoOrgWizard extends LightningElement {
     hasData;
     featuresList;
     numOfFeatures;
+    
     featuresMap = new Map();
 
     @wire(getFeatures) 
@@ -24,11 +25,7 @@ export default class Step3NewDemoOrgWizard extends LightningElement {
         }
     }
 
-    isSelected(event) {
+    
 
-    }
-
-    handleClick(event) {
-
-    }
+    
 }

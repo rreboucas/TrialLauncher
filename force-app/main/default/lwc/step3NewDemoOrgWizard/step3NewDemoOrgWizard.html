@@ -7,18 +7,8 @@
         <div class="">  
             <lightning-layout>
                 <lightning-layout-item>
-                    <template if:true={hasData} for:each={featuresList} for:item="feature">
-                        <lightning-button-stateful
-                            label-when-off={feature.Name}
-                            label-when-on={feature.Name}
-                            key={feature.Demo_Template__c}
-                            label-when-hover="Unselect"
-                            icon-name-when-off="utility:add"
-                            icon-name-when-on="utility:check"
-                            icon-name-when-hover="utility:close"
-                            variant="neutral"
-                            onclick={handleClick}>
-                        </lightning-button-stateful>
+                    <template if:true={hasData} for:each={featuresList} for:item="feature" class="slds-p-around_xx-small">
+                        <c-button-stateful key={feature.Demo_Template__c} featurename={feature.Name} templateid={feature.Demo_Template__c}></c-button-stateful>
                     </template>
                 </lightning-layout-item>
             </lightning-layout>
