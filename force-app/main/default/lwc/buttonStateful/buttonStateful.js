@@ -21,7 +21,7 @@ export default class ButtonStateful extends LightningElement {
                 this.selectedTemplate = event.target.dataset.item;
                 console.log('buttonStateful.js - selectedTemplate: ' + this.selectedTemplate);
                 this.payload = {templateId: this.selectedName , templateName: this.selectedTemplate, operation: 'add'};
-                const selectedEvent = new CustomEvent('featureselected', { detail: this.payload });
+                const selectedEvent = new CustomEvent('featureselected', { detail: this.payload, bubbles: true });
                 this.dispatchEvent(selectedEvent);
               break;
             case false:
@@ -31,7 +31,7 @@ export default class ButtonStateful extends LightningElement {
                 this.selectedTemplate = event.target.dataset.item;
                 console.log('buttonStateful.js - selectedTemplate: ' + this.selectedTemplate);
                 this.payload = {templateId: this.selectedName , templateName: this.selectedTemplate, operation: 'remove'};
-                const unselectedEvent = new CustomEvent('featureselected', { detail: this.payload });
+                const unselectedEvent = new CustomEvent('featureselected', { detail: this.payload, bubbles: true });
                 this.dispatchEvent(unselectedEvent);
             break;
         }

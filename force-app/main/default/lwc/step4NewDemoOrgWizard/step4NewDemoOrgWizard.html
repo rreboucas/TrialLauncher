@@ -1,0 +1,50 @@
+<template>
+    <div class="slds-p-bottom_large slds-p-left_large parent">
+        <div class="slds-p-bottom_large">
+            Based on your selection, we have selected the following Demo Org configuration:
+        </div>
+        <br>
+        <div class="">  
+            <lightning-layout>
+                <lightning-layout-item size="3" flexibility="auto" padding="around-small">
+                    <img src={einsteinLogoUrl}>
+                </lightning-layout-item>
+                <lightning-layout-item size="9" flexibility="auto" padding="around-small">
+                    <lightning-layout>
+                        <lightning-layout-item size="1" padding="around-small">
+                            <lightning-icon icon-name="utility:check" alternative-text="Check" size="small" title="check item"></lightning-icon>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="11" padding="around-small">
+                            {template}
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <lightning-layout>
+                        <lightning-layout-item size="1" padding="around-small">
+                            <lightning-icon icon-name="utility:check" alternative-text="Check" size="small" title="check item"></lightning-icon>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="11" padding="around-small">
+                            Configure/Deploy includedd/non-included  selected features:
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <lightning-layout>
+                        <lightning-layout-item size="1" padding="around-small">
+                            
+                        </lightning-layout-item>
+                        <lightning-layout-item size="11" padding="around-small">
+                            <b>
+                                <ul class="slds-list_dotted">
+                                    <template if:true={hasData} for:each={features} for:item="feature" class="slds-p-around_xx-small">
+                                        <li key={feature}>{feature}</li>
+                                    </template>
+                                </ul>
+                            </b>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </div>
+</template>

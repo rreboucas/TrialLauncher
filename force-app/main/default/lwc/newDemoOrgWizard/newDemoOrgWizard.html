@@ -8,7 +8,7 @@
             </div>
           </header>
 
-        <div class="body">
+        <div class="body" onfeatureselected={storeSelectedFeature}>
 
             <template if:true={isStep1}>
                 <c-step1-new-demo-org-wizard onvaluechanged={storeFieldValues}></c-step1-new-demo-org-wizard>
@@ -23,7 +23,11 @@
             </template>
 
             <template if:true={isStep4}>
-                Step 4
+                <c-step4-new-demo-org-wizard template={baseTemplateName} features={featuresList}></c-step4-new-demo-org-wizard>
+            </template>
+
+            <template if:true={isStep5}>
+                <c-step5-new-demo-org-wizard ></c-step5-new-demo-org-wizard>
             </template>
 
         </div>
@@ -45,7 +49,9 @@
 
                 </lightning-layout-item>
                 <lightning-layout-item size="2">
-                    <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext} disabled={disableNext} class="slds-m-left_x-small"></lightning-button>
+                    <template if:true={showNextStep}>
+                        <lightning-button variant="brand" label={nextButtonLabel} title="Primary action" onclick={handleNext} disabled={disableNext} class="slds-m-left_x-small"></lightning-button>
+                    </template>
                 </lightning-layout-item>
             </lightning-layout>
         </div>

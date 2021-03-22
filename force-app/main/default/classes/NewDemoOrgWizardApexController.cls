@@ -40,9 +40,9 @@ public with sharing class NewDemoOrgWizardApexController {
     }
 
     @AuraEnabled(cacheable=true)
-    public static List<Demo_Product__c> getActiveFeatures() {
+    public static AggregateResult[] getActiveFeatures() {
 
-        List<Demo_Product__c> lstOfFeatures = [SELECT Demo_Template__c,Name FROM Demo_Product__c where Status__c = 'Active' WITH SECURITY_ENFORCED  order by Name];
+        AggregateResult[] lstOfFeatures = [SELECT Name FROM Demo_Product__c where Status__c = 'Active' WITH SECURITY_ENFORCED GROUP BY Name order by Name];
         System.debug('######## lstOfFeatures: ' + lstOfFeatures);
         return lstOfFeatures;
     }

@@ -26,13 +26,13 @@ export default class Step2NewDemoOrgWizard extends LightningElement {
 
     handleChange(event) {
         this.value = event.detail.value;
-        this.label = event.detail.label;
+        this.label = event.target.options.find(opt => opt.value === event.detail.value).label;
 
         console.log('step2NewDemoOrgWizard.js - handleChange handler - value: ' + this.value);
         console.log('step2NewDemoOrgWizard.js - handleChange handler - label: ' + this.label);
 
         // Send Message to Parent LWC to handle
-        this.payload = {templateId: this.value, templateName: this.value};
+        this.payload = {templateId: this.value, templateName: this.label};
 
         // Creates the event with the record ID data.
         const selectedEvent = new CustomEvent('basetemplateselected', { detail: this.payload });

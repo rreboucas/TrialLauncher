@@ -3,28 +3,54 @@ import { LightningElement, api, wire } from 'lwc';
 
 export default class NewDemoOrgWizard extends LightningElement {
     hasPreviousStep = false;
+    showNextStep = true;
     selectedStep = 'Step1';
     isStep1 = true;
     isStep2 = false;
     isStep3 = false;
     isStep4 = false;
+    isStep5 = false;
     valuesMap = new Map();
     disableNext = true;
+    featuresSet = new Set();
+    featuresList;
+    baseTemplateName;
+    baseTemplateId;
+    nextButtonLabel = 'Next';
 
     connectedCallback() {
         //this.valuesMap = new Map();
     }
 
-    storeTemplateInfo(event) {
-        let tempId = event.detail.templateId;
-        console.log('newDemoOrgWizard.js - storeFieldValues event handler - tempId: ' + tempId);
-        if (tempId)
-            this.baseTemplateId = tempId;
+    storeSelectedFeature(event) {
+        
 
-        let tempName = event.detail.templateName;
-        console.log('newDemoOrgWizard.js - storeFieldValues event handler - tempName: ' + tempName);
-        if (tempName)
-            this.baseTemplateId = tempName;
+        let fTemplate = event.detail.templateId;
+        console.log('newDemoOrgWizard.js - storeSelectedFeature event handler - fTemplate: ' + fTemplate);
+
+        let op = event.detail.operation;
+        console.log('newDemoOrgWizard.js - storeSelectedFeature event handler - op: ' + op);
+
+        switch (op) {
+            case 'add':
+                this.featuresSet.add(fTemplate);
+                this.featuresList = [...this.featuresSet];
+              break;
+            case 'remove':
+                this.featuresSet.delete(fTemplate);
+                this.featuresList = [...this.featuresSet];
+            break;
+        }
+    }
+
+    storeTemplateInfo(event) {
+
+        this.baseTemplateId = event.detail.templateId;
+        console.log('newDemoOrgWizard.js - storeFieldValues event handler - baseTemplateId: ' + this.baseTemplateId);        
+        
+        this.baseTemplateName = event.detail.templateName;
+        console.log('newDemoOrgWizard.js - storeFieldValues event handler - baseTemplateName: ' + this.baseTemplateName);
+        
     }
 
     storeFieldValues(event) {
@@ -66,6 +92,14 @@ export default class NewDemoOrgWizard extends LightningElement {
             this.selectedStep = 'Step4';
             this.isStep3 = false;
             this.isStep4 = true;
+            this.nextButtonLabel = 'Request Org';
+        }
+        else if(getselectedStep === 'Step4'){
+            this.selectedStep = 'Step4';
+            this.isStep4 = false;
+            this.isStep5 = true;
+            this.showNextStep = false;
+            this.hasPreviousStep = false;
         }
     }
 
