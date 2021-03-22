@@ -1,10 +1,12 @@
 import { LightningElement, wire } from 'lwc';
 import getFields from '@salesforce/apex/NewDemoOrgWizardApexController.getStep1Fields';
 
+
 export default class Step1NewDemoOrgWizard extends LightningElement {
     hasData;
     fieldsList;
     numOfFields;
+
 
     connectedCallback(){
         console.log('step1NewDemoOrgWizard.js - connectedCallback handler');

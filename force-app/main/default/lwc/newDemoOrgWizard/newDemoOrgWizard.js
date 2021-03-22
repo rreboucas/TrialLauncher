@@ -1,5 +1,6 @@
 import ApiName from '@salesforce/schema/CaseStatus.ApiName';
 import { LightningElement, api, wire } from 'lwc';
+import Id from '@salesforce/user/Id';
 
 export default class NewDemoOrgWizard extends LightningElement {
     hasPreviousStep = false;
@@ -17,7 +18,8 @@ export default class NewDemoOrgWizard extends LightningElement {
     baseTemplateName;
     baseTemplateId;
     nextButtonLabel = 'Next';
-
+    userId = Id;
+    
     connectedCallback() {
         //this.valuesMap = new Map();
     }
