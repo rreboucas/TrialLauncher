@@ -1,17 +1,28 @@
 <template>
     <div class="slds-p-bottom_large slds-p-left_large parent">
         <div class="slds-p-bottom_large">
-            Select the base Product for your demo:
+            
         </div>
-        <br>
         <div class="">  
             <lightning-combobox
+            label="Select the base Product for your demo:"
             name="progress"
-            label="Status"
             value={value}
             placeholder="Select an option..."
             options={options}
             onchange={handleChange} ></lightning-combobox>
+        </div>
+        <div class="slds-p-bottom_large slds-p-top_large">
+            
+        </div>
+        <div class="">  
+            <lightning-combobox
+            label="Select the language for your demo org:"
+            name="languagepicker"
+            value={languagevalue}
+            placeholder="Select an option..."
+            options={languageoptions}
+            onchange={handleLanguageChange} ></lightning-combobox>
         </div>
     </div>
 </template>

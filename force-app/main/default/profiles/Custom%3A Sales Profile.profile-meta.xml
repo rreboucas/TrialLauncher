@@ -5,11 +5,37 @@
         <default>false</default>
         <visible>false</visible>
     </applicationVisibilities>
+    <classAccesses>
+        <apexClass>NewDemoOrgWizardApexController</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>SignupResponse</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>callSignupAPI</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>schedFetchOrgStatus</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
     <custom>true</custom>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Demo_Org__c.Cloud__c</field>
+        <field>Demo_Feature__c.Demo_Product__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Demo_Feature__c.Status__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Demo_Org_Wizard_Page_1__mdt.Field_Type__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -18,7 +44,22 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Demo_Org__c.Demo_Template__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>Demo_Org__c.Partner_Name__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Demo_Org__c.Signup_Request_Id__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Demo_Org__c.Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -66,11 +107,35 @@
         <field>Demo_Product__c.Video_Id__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>SignupStatus__e.OrgId__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>SignupStatus__e.OrgInstance__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>SignupStatus__e.OrgStatus__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <layoutAssignments>
+        <layout>Demo_Feature__c-Demo Feature Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Demo_Org_Wizard_Page_1__mdt-Demo Org Wizard - Page 1 Layout</layout>
+    </layoutAssignments>
     <layoutAssignments>
         <layout>Demo_Org__c-Demo Org Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
         <layout>Demo_Product__c-Demo Product Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Demo_Template__c-Demo Template Layout</layout>
     </layoutAssignments>
     <tabVisibilities>
         <tab>Demo_Org__c</tab>

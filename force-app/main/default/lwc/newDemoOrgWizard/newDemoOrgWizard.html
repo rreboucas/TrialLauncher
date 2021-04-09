@@ -15,7 +15,7 @@
             </template>
 
             <template if:true={isStep2}>
-                <c-step2-new-demo-org-wizard onbasetemplateselected={storeTemplateInfo}></c-step2-new-demo-org-wizard>
+                <c-step2-new-demo-org-wizard onbasetemplateselected={storeTemplateInfo} onbaselanguageselected={storeLanguageInfo}></c-step2-new-demo-org-wizard>
             </template>
 
             <template if:true={isStep3}>
@@ -27,7 +27,11 @@
             </template>
 
             <template if:true={isStep5}>
-                <c-step5-new-demo-org-wizard ></c-step5-new-demo-org-wizard>
+                <c-step5-new-demo-org-wizard orgstatus={createdOrgStatus} ></c-step5-new-demo-org-wizard>
+            </template>
+
+            <template if:true={isDemoOrgCreated}>
+                <c-created-org-new-demo-org-wizard orgstatus={createdOrgStatus}></c-created-org-new-demo-org-wizard>>
             </template>
 
         </div>
