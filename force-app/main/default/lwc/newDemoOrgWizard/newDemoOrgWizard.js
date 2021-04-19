@@ -1,20 +1,16 @@
 import { LightningElement, api, wire } from 'lwc';
 import Id from '@salesforce/user/Id';
-import { getRecord } from 'lightning/uiRecordApi';
 import createDemoOrg from '@salesforce/apex/NewDemoOrgWizardApexController.createDemoOrg';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { NavigationMixin } from 'lightning/navigation';
 import { subscribe, unsubscribe, onError, setDebugFlag, isEmpEnabled } from 'lightning/empApi';
 import getSignupStatus from '@salesforce/apex/callSignupAPI.getRealTimeOrgStatus';
+import getFeatures from '@salesforce/apex/NewDemoOrgWizardApexController.getFeaturesSelected';
 
-const FIELDS = [
-    'User.FirstName',
-    'User.LastName',
-    'User.Country',
-    'User.Email',
-];
+
 
 export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) {
+    @api step;
     hasPreviousStep = false;
     showNextStep = true;
     selectedStep = 'Step1';
@@ -40,25 +36,65 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
     channelName = '/event/SignupStatus__e';
     isDemoOrgCreated = false;
     createdOrgStatus;
+    userName;
+
+    featureslistdata;
+    featurename;
+    featureposition;
+    instruction1;
+    instruction2;
+    videoid;
+    publicdocurl;
+    expertspageurl;
+    featuresfetchresult;
+    featurescolsize;
+    featurescolcurrentitem;
 
     subscription = {};
-
-    @wire(getRecord, { recordId: '$userId', fields: FIELDS })
-    wiredUserInfo({ error, data }) {
-        if (data) {
-            this.user = data;
-            console.log('newDemoOrgWizard.js - user email: ' + this.user.fields.Email.value);
-            console.log('newDemoOrgWizard.js - user Country: ' + this.user.fields.Country.value);
-            console.log('newDemoOrgWizard.js - user First Name: ' + this.user.fields.FirstName.value);
-            console.log('newDemoOrgWizard.js - user Last Name: ' + this.user.fields.LastName.value);
-            this.error = undefined;
-        } else if (error) {
-            this.error = error;
-            this.userEmail = undefined;
-        }
-    }
+ 
 
     connectedCallback() {
+       
+        switch(this.step) {
+            case '1':
+                this.isStep1 = true;
+              break;
+            case '2':
+                this.isStep1 = false;
+                this.isStep2 = true;
+              break;
+            case '3':
+                this.isStep1 = false;
+                this.isStep3 = true;
+              break;
+            case '3':
+                this.isStep1 = false;
+                this.isStep3 = true;
+              break;
+            case '4':
+                this.isStep1 = false;
+                this.isStep4 = true;
+              break;
+            case '5':
+                this.isStep1 = false;
+                this.isStep5 = true;
+              break;
+            case '6':
+                this.isStep1 = false;
+                this.initDemoCreated();
+              break;
+            case '7':
+                
+                let tempList = [ 'a000U000003MzLeQAK'];
+                this.featureslistdata = tempList;
+                this.fetchDemoFeatures();
+                this.isStep1 = false;
+                this.isFeaturesStep = true;
+
+              break;
+          }
+        
+         /*
         // Register error listener for Platform Events       
         this.registerErrorListener();
 
@@ -77,6 +113,7 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
             console.log('Subscription request sent to: ', JSON.stringify(response.channel));
             this.subscription = response;
         });
+        */
     }
 
     storeSelectedFeature(event) {
@@ -107,6 +144,13 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
         
         this.baseTemplateName = event.detail.templateName;
         console.log('newDemoOrgWizard.js - storeFieldValues event handler - baseTemplateName: ' + this.baseTemplateName);
+        
+    }
+
+    storeUserInfo(event) {
+
+        this.user = event.detail.user;
+        console.log('newDemoOrgWizard.js - storeUserInfo event handler - user: ' + this.user);        
         
     }
 
@@ -185,6 +229,10 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
                 console.log('newDemoOrgWizard.js - createOrg - signupRequestId: ' + this.signupRequestId);
                 this.localDemoOrgRecordId = result.localDemoOrgRecId;
                 console.log('newDemoOrgWizard.js - createOrg - localDemoOrgRecordId: ' + this.localDemoOrgRecordId);
+                this.userName = result.username;
+                console.log('newDemoOrgWizard.js - createOrg - username: ' + this.userName);
+                this.featureslistdata = result.featureidslist;
+                console.log('newDemoOrgWizard.js - createOrg - featureslistdata: ' + this.featureslistdata);
 
                 // Show Toast event with created local record:
                 this[NavigationMixin.GenerateUrl]({
@@ -206,23 +254,66 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
                             }
                         ]
                     });
-                    this.dispatchEvent(event);
+                    this.dispatchEvent(event); 
 
                     // Sets client poller to fetch Signup Request Status:
 
                     setInterval(() => this.fetchOrgStatus(), 60000);
                 });
-
-                
-
-
-
             })
             .catch(error => {
                 this.error = error;
             });
 
         }
+        else if(getselectedStep === 'DemoCreated'){
+            this.selectedStep = 'FeaturesStep';
+            this.isDemoOrgCreated = false;
+            this.isFeaturesStep = true;
+            
+            this.fetchDemoFeatures();
+
+
+        }
+        
+    }
+
+    fetchDemoFeatures(){
+
+        // Fetch Demo Feature Data:
+        getFeatures({ listofFeatureIds: this.featureslistdata })
+        .then((result) => {
+            this.featuresfetchresult = result;
+            console.log('featuresfetchresult : ' + this.featuresfetchresult);
+            this.featurescolsize = this.featuresfetchresult.length;
+            this.error = undefined;
+
+            if (this.featuresfetchresult)
+            {
+                // Set the featureslist lwc reactive properties to the first feature in the fetch results list
+                this.featurescolcurrentitem = 0;
+                this.featurename = this.featuresfetchresult[0].featurename;
+                console.log('NewDemoOrgWizard - featurename : ' + this.featurename);
+                this.featureposition = this.featuresfetchresult[0].featureposition;
+                console.log('NewDemoOrgWizard - featureposition : ' + this.featureposition);
+                this.instruction1 = this.featuresfetchresult[0].instruction1;
+                console.log('NewDemoOrgWizard - instruction1 : ' + this.instruction1);
+                this.instruction2 = this.featuresfetchresult[0].instruction2;
+                console.log('NewDemoOrgWizard - instruction2 : ' + this.instruction2);
+                this.videoid = this.featuresfetchresult[0].videoid;
+                console.log('NewDemoOrgWizard - videoid : ' + this.videoid);
+                this.publicdocurl = this.featuresfetchresult[0].publicdocurl;
+                console.log('NewDemoOrgWizard - publicdocurl : ' + this.publicdocurl);
+                this.expertspageurl = this.featuresfetchresult[0].expertspageurl;
+                console.log('NewDemoOrgWizard - expertspageurl : ' + this.expertspageurl);
+
+            }
+                                
+        })
+        .catch((error) => {
+            this.error = error;
+        });
+
     }
 
     fetchOrgStatus(){
@@ -232,16 +323,26 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
                 console.log('fetchOrgStatus : ' + this.createdOrgStatus);
                 this.error = undefined;
 
-                if (this.createdOrgStatus === 'Success') {
+                if (this.createdOrgStatus === 'Success' && this.isDemoOrgCreated === false) {
                     // Hide step 5 and unhide step 6:
-                    this.isDemoOrgCreated = true;
-                    this.isStep5 = false;
+                    this.initDemoCreated();
                 }
             })
             .catch((error) => {
                 this.error = error;
                 this.contacts = undefined;
             });
+
+    }
+
+    initDemoCreated() {
+        this.isDemoOrgCreated = true;
+        this.isStep5 = false;
+        this.selectedStep = 'DemoCreated';
+        this.showNextStep = true;
+        this.hasPreviousStep = true;
+        this.nextButtonLabel = 'Next';
+        this.disableNext = false;
 
     }
 
@@ -262,6 +363,10 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
             this.selectedStep = 'Step3';
             this.isStep4 = false;
             this.isStep3 = true;
+        }
+        else if(getselectedStep === 'FeaturesStep'){
+            this.initDemoCreated();
+            this.hasPreviousStep = false;
         }
     }
 

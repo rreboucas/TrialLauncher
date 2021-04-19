@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>51.0</apiVersion>
+    <apiVersion>50.0</apiVersion>
     <isExposed>true</isExposed>
     <targets>
-        <target>lightning__RecordPage</target>
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
+        <target>lightning__Tab</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__AppPage, lightning__HomePage, lightning__RecordPage">
-            <property name="step" label="For Testing Only - Chose the step" type="String" default="1"/>
+        <targetConfig targets="lightning__AppPage, lightning__HomePage">
+            <property name="vidyardid" type="String" label="Vidyard Uid"/>
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

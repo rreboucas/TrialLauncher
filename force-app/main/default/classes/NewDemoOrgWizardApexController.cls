@@ -27,7 +27,24 @@ public with sharing class NewDemoOrgWizardApexController {
     @AuraEnabled
     public String username { get;set; }
     @AuraEnabled
+    public List<String> featureidslist { get;set; }
+    @AuraEnabled
     public String errorCode { get;set; }
+
+    @AuraEnabled
+    public String featurename { get;set; }
+    @AuraEnabled
+    public String featureposition { get;set; }
+    @AuraEnabled
+    public String instruction1 { get;set; }
+    @AuraEnabled
+    public String instruction2 { get;set; }
+    @AuraEnabled
+    public String videoid { get;set; }
+    @AuraEnabled
+    public String publicdocurl { get;set; }
+    @AuraEnabled
+    public String expertspageurl { get;set; }
 
 
     @AuraEnabled(cacheable=false)
@@ -118,7 +135,7 @@ public with sharing class NewDemoOrgWizardApexController {
 
             
             Demo_Org__c rec = new Demo_Org__c();
-            Datetime dt = (Datetime)JSON.deserialize(demoDateTime, DateTime.class);
+            Datetime dt = Datetime.valueOf(demoDateTime.replace('T',' '));
             rec.Signup_Request_Id__c = signupReqId;
             rec.Demo_Date_Time__c = dt;
             rec.Name = partnerName + ' - ' + dt.date().format();
@@ -130,8 +147,20 @@ public with sharing class NewDemoOrgWizardApexController {
             insert rec;
 
             result.localDemoOrgRecId = rec.id;
+            result.username = uniqueUserName;
             
             // Fetch Demo Product records to reconcile with features for insert / populate lookup field:
+
+            Map<String, Demo_Product__c> featuresMap = new Map<String, Demo_Product__c>(); 
+            for(Demo_Product__c objFeature : [SELECT Demo_Template__r.Template_ID__c,Id,Instruction_Line_1__c,Instruction_Line_2__c,ISV_Instructions__c,Name,Status__c,Type__c,Video_Id__c FROM Demo_Product__c where Status__c = 'Active' WITH SECURITY_ENFORCED])
+            { 
+                Demo_Product__c currentProduct = featuresMap.get(objFeature.Name);
+                if (featuresMap.containsKey(objFeature.Name) && currentProduct.Demo_Template__r.Template_ID__c.equalsIgnoreCase(templateId))
+                    featuresMap.put(objFeature.Name, objFeature);
+                else 
+                    featuresMap.put(objFeature.Name, objFeature);
+            }
+                
 
 
 
@@ -144,30 +173,27 @@ public with sharing class NewDemoOrgWizardApexController {
                     System.debug('######### f: ' + f);
                     Demo_Feature__c ft = new Demo_Feature__c();
                     ft.Name = f;
+                    if (featuresMap.containsKey(ft.Name))
+                    {
+                        Demo_Product__c d = featuresMap.get(ft.Name);
+                        ft.Demo_Product__c = d.Id;
+                    }
+                         
                     System.debug('######### rec.id: ' + rec.id);
                     ft.Demo_Org__c = rec.id;
                     lstFeatures.add(ft);
                  }
                  System.debug('######### lstFeatures: ' + lstFeatures);
-                 insert lstFeatures;
+                 
+                 Database.SaveResult[] srList = Database.insert(lstFeatures);
+                 List<String> lstCreatedIds = new List<String>();
+                 for (Database.SaveResult sr : srList)
+                 {
+                    lstCreatedIds.add(Id.valueOf(sr.getId())) ;
+                 }
+                 result.featureidslist = lstCreatedIds;
+                 System.debug('######### result.featureidslist: ' + result.featureidslist);
              }
-             
-             
-             // Schedule apex job to fetch SignupRequest Status on Signup APi Enabled org:
-
-             // Now schedule new batch jobs to run in 10 mins:
-        
-             String hour = String.valueOf(Datetime.now().hour());
-             String min = String.valueOf(Datetime.now().minute() + 10); 
-             String ss = String.valueOf(Datetime.now().second());
-             
-             //parse to cron expression
-             String nextFireTime = ss + ' ' + min + ' ' + hour + ' * * ?';
-        
-            schedFetchOrgStatus s = new schedFetchOrgStatus();
-            s.signupReqId =  strSignupRequestId;
-            s.localDemoOrgRecId = rec.id;
-            System.schedule('schedFetchSignupStatus-' + rec.id + String.valueOf(Datetime.now()), nextFireTime, s);
 
         }
 
@@ -181,6 +207,33 @@ public with sharing class NewDemoOrgWizardApexController {
         List<Demo_Org_Wizard_Page_1__mdt> lstOfFields = [SELECT Label, Field_API_Name__c, Field_Type__c FROM Demo_Org_Wizard_Page_1__mdt WITH SECURITY_ENFORCED order by Field_Display_Order__c asc];
         System.debug('######## lstOfFields: ' + lstOfFields);
         return lstOfFields;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<NewDemoOrgWizardApexController> getFeaturesSelected(List<String> listofFeatureIds) {
+
+        List<NewDemoOrgWizardApexController> lstFeaturesResult = new List<NewDemoOrgWizardApexController>();
+        List<Demo_Feature__c> lstOfFeatures = [SELECT Id,Demo_Product__r.Category__c,Demo_Product__r.Demo_Template__c,Demo_Product__r.Instructions_Doc__c,Demo_Product__r.Instruction_Line_1__c,Demo_Product__r.Instruction_Line_2__c,Demo_Product__r.ISV_Instructions__c,Demo_Product__r.Name,Demo_Product__r.Status__c,Demo_Product__r.Type__c,Demo_Product__r.Video_Id__c FROM Demo_Feature__c where id in: listofFeatureIds WITH SECURITY_ENFORCED order by Demo_Product__r.Name asc];
+        System.debug('######## lstOfFeatures: ' + lstOfFeatures);
+        if (!lstOfFeatures.isEmpty())
+        {
+            Integer count = 1;
+            for (Demo_Feature__c f: lstOfFeatures)
+            {
+                NewDemoOrgWizardApexController rec = new NewDemoOrgWizardApexController();
+                rec.featurename = f.Demo_Product__r.Name;
+                rec.featureposition = '(Feature ' + count + ' of ' + lstOfFeatures.size() + ')';
+                rec.instruction1 = f.Demo_Product__r.Instruction_Line_1__c;
+                rec.instruction2 = f.Demo_Product__r.Instruction_Line_2__c;
+                rec.videoid = f.Demo_Product__r.Video_Id__c;
+                rec.publicdocurl = f.Demo_Product__r.Instructions_Doc__c;
+                rec.expertspageurl = f.Demo_Product__r.ISV_Instructions__c;
+                count ++;
+                lstFeaturesResult.add(rec);
+            }
+            System.debug('######## lstFeaturesResult: ' + lstFeaturesResult);
+        }
+        return lstFeaturesResult;
     }
 
     @AuraEnabled(cacheable=true)
@@ -207,6 +260,15 @@ public with sharing class NewDemoOrgWizardApexController {
         AggregateResult[] lstOfFeatures = [SELECT Name FROM Demo_Product__c where Status__c = 'Active' WITH SECURITY_ENFORCED GROUP BY Name order by Name];
         System.debug('######## lstOfFeatures: ' + lstOfFeatures);
         return lstOfFeatures;
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static String getOrgURL() {
+        string urler = URL.getSalesforceBaseUrl().toString();
+        
+        System.debug('######## urler: ' + urler);
+        
+        return urler;
     }
 
     private static String getUUID()

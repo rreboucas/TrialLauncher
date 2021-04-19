@@ -1,0 +1,27 @@
+<apex:page >
+    <!-- The script tag should live in the head of your page if at all possible
+    -->
+    <script>
+        var tempValue = '{!$CurrentPage.parameters.vidyardId}';
+        console.log('videoID on VF page = ' + tempValue);
+        if (typeof tempValue === 'undefined')
+        {
+            document.getElementById("cont1").style.visibility="hidden";
+        }
+    </script>
+
+    <script type="text/javascript" async="true" src="https://play.vidyard.com/embed/v4.js"></script>
+    <!-- Put this wherever you would like your player to appear -->
+    <div id="cont1">
+        <img
+        style="width: 100%; margin: auto; display: block;"
+        class="vidyard-player-embed"
+        src="https://play.vidyard.com/uuid.jpg"
+        data-uuid="{!$CurrentPage.parameters.vidyardId}"
+        data-v="4"
+        data-type="inline"
+        data-width="640"
+        data-height="300"
+        />
+    </div>
+</apex:page>

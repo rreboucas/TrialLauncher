@@ -1,0 +1,48 @@
+<template>
+    <div class="slds-p-bottom_large slds-p-left_large parent">
+        <div class="slds-p-bottom_large">
+            <b>{featurename}</b> {featureposition}
+        </div>
+      
+
+        <ul>
+            <li>
+                <lightning-input type="checkbox" label={instruction1} name="inst1"></lightning-input>
+            </li>
+            <li>
+                <lightning-input type="checkbox" label={instruction2} name="inst2"></lightning-input>
+            </li>
+        </ul>
+        <br>
+        <br>
+        <div>
+            <template if:true={showVideoPlayer}>
+                <c-video-Player vidyardid={videoid}></c-video-Player>
+            </template>
+        </div>
+        <div class="slds-p-top_x-small">
+        <lightning-layout  horizontal-align="space">
+            <lightning-layout-item>
+                <lightning-layout>
+                    <lightning-layout-item padding="horizontal-small">
+                        <lightning-icon icon-name="utility:link" alternative-text="Check" size="x-small" title="check item"></lightning-icon>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <lightning-formatted-url value={publicdocurl} tooltip="Use https://domain-name" label="Packaging FAQ" target="_blank" ></lightning-formatted-url>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+            <lightning-layout-item>
+                <lightning-layout>
+                    <lightning-layout-item padding="horizontal-small">
+                        <lightning-icon icon-name="utility:link" alternative-text="Check" size="x-small" title="check item"></lightning-icon>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <lightning-formatted-url value={expertspageurl} tooltip="Use https://domain-name" label="Platform Experts Page" target="_blank" ></lightning-formatted-url>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    </div>
+</template>

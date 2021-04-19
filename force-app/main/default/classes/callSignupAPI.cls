@@ -9,14 +9,14 @@ public with sharing class callSignupAPI {
     public static callSignupAPI getRealTimeOrgStatus(String signupRecordId, String localDemoOrgRec)
     { 
         callSignupAPI rec = new callSignupAPI();
-        SignupResponse s = getSignupResponse(signupRecordId, localDemoOrgRec);
+        SignupResponse s = getSignupResponse(signupRecordId, localDemoOrgRec, false);
         rec.orgId = s.CreatedOrgId;
         rec.status = s.Status;
 
         return rec;
     }
 
-    private static SignupResponse getSignupResponse(String signupRecordId, String localDemoOrgRec)
+    private static SignupResponse getSignupResponse(String signupRecordId, String localDemoOrgRec, Boolean calledFromApexJob)
     {
         SignupResponse resp = new SignupResponse();
         
@@ -47,22 +47,13 @@ public with sharing class callSignupAPI {
                 d.Status__c = strStatus;
                 update d;
 
-                // Fire Platform Event to notify LWCs that are waiting for ststus change
-                SignupStatus__e ev = new SignupStatus__e (OrgStatus__c = resp.Status, OrgId__c = resp.CreatedOrgId, OrgInstance__c = resp.CreatedOrgInstance);
-                Database.SaveResult sr = EventBus.publish(ev);
-                System.debug('#### Event Publish Status: ' + sr.isSuccess());
-                String jobName = 'schedFetchSignupStatus-' + localDemoOrgRec + '%';
-
-
-                // Cancel any pending apex jobs to fetch status:
-
-                List<CronTrigger> lstFetchJobs = [SELECT Id FROM CronTrigger where CronJobDetail.name like: jobName  AND State = 'Waiting'];
-                if (!lstFetchJobs.isEmpty())
+                if (calledFromApexJob)
                 {
-                    for (CronTrigger job: lstFetchJobs)
-                    {
-                        System.abortJob(job.Id);
-                    }
+                    // Fire Platform Event to notify LWCs that are waiting for ststus change
+                    SignupStatus__e ev = new SignupStatus__e (OrgStatus__c = resp.Status, OrgId__c = resp.CreatedOrgId, OrgInstance__c = resp.CreatedOrgInstance);
+                    Database.SaveResult sr = EventBus.publish(ev);
+                    System.debug('#### Event Publish Status: ' + sr.isSuccess());
+                    String jobName = 'schedFetchSignupStatus-' + localDemoOrgRec + '%';
                 }
             }
         }
@@ -73,7 +64,7 @@ public with sharing class callSignupAPI {
     @future(callout=true)
     public static void getOrgStatus(String signupRecordId, String localDemoOrgRec)
     { 
-        SignupResponse s = getSignupResponse(signupRecordId, localDemoOrgRec);
+        SignupResponse s = getSignupResponse(signupRecordId, localDemoOrgRec, true);
     }
 
     
