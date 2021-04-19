@@ -6,7 +6,7 @@ import { NavigationMixin } from 'lightning/navigation';
 import { subscribe, unsubscribe, onError, setDebugFlag, isEmpEnabled } from 'lightning/empApi';
 import getSignupStatus from '@salesforce/apex/callSignupAPI.getRealTimeOrgStatus';
 import getFeatures from '@salesforce/apex/NewDemoOrgWizardApexController.getFeaturesSelected';
-
+import getOrgURL from '@salesforce/apex/NewDemoOrgWizardApexController.getOrgURL';
 
 
 export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) {
@@ -34,6 +34,7 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
     localDemoOrgRecordId;
     error;
     channelName = '/event/SignupStatus__e';
+    isLastStep = false;
     isDemoOrgCreated = false;
     createdOrgStatus;
     userName;
@@ -49,11 +50,15 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
     featuresfetchresult;
     featurescolsize;
     featurescolcurrentitem;
+    hasotherfeaturestoshow;
+    orgURL;
 
     subscription = {};
  
 
     connectedCallback() {
+
+        this.fetchOrgURL();
        
         switch(this.step) {
             case '1':
@@ -85,10 +90,13 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
               break;
             case '7':
                 
-                let tempList = [ 'a000U000003MzLeQAK'];
+                let tempList = [ 'a000U000003MzLeQAK','a000U000003MzLfQAK'];
                 this.featureslistdata = tempList;
+                this.selectedStep = 'FeaturesStep';
                 this.fetchDemoFeatures();
                 this.isStep1 = false;
+                this.showNextStep = true;
+                this.disableNext = false;
                 this.isFeaturesStep = true;
 
               break;
@@ -267,15 +275,61 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
 
         }
         else if(getselectedStep === 'DemoCreated'){
-            this.selectedStep = 'FeaturesStep';
+            console.log('newDemoOrgWizard.js - this.isDemoOrgCreated-nxt-before: ' + this.isDemoOrgCreated);
             this.isDemoOrgCreated = false;
+            this.selectedStep = 'FeaturesStep';
             this.isFeaturesStep = true;
-            
-            this.fetchDemoFeatures();
+            this.showNextStep = true;
+            if (!this.featuresfetchresult)
+                this.fetchDemoFeatures();
+            else
+                this.setFeatureItemData();
+                console.log('newDemoOrgWizard.js - this.isDemoOrgCreated-nxt-after: ' + this.isDemoOrgCreated);
+        }
+        else if(getselectedStep === 'FeaturesStep'){
 
+            console.log('NewDemoOrgWizard - featurescolsize : ' + this.featurescolsize);
+            console.log('NewDemoOrgWizard - featurescolcurrentitem : ' + this.featurescolcurrentitem);
+            console.log('NewDemoOrgWizard - hasotherfeaturestoshow : ' + this.hasotherfeaturestoshow);
 
+            this.featurescolcurrentitem = this.featurescolcurrentitem + 1;
+            if (this.featurescolcurrentitem === this.featurescolsize)
+                    this.hasotherfeaturestoshow = false;
+                else if (this.featurescolcurrentitem < this.featurescolsize)
+                    this.hasotherfeaturestoshow = true;
+
+            if (this.hasotherfeaturestoshow)
+            {
+                
+                this.setFeatureItemData();
+                console.log('NewDemoOrgWizard - featurescolcurrentitem : ' + this.featurescolcurrentitem);
+            }
+            else
+            {
+                // show final step with slack button
+                console.log('NewDemoOrgWizard - entered ShowSlack step ');
+                this.isFeaturesStep = false;
+                this.isLastStep = true;
+                this.selectedStep = 'LastStep';
+                this.showNextStep = false;
+            }
+            this.hasPreviousStep = true;
         }
         
+    }
+
+    fetchOrgURL(){
+        getOrgURL()
+        .then((result) => {
+            this.orgURL = result;
+            console.log('NewDemoOrgWizard.js - result: ' + this.orgURL);
+            
+        })
+        .catch((error) => {
+            this.error = error;
+        });
+           
+        console.log('#### NewDemoOrgWizard.js - orgURL: ' + this.orgURL);
     }
 
     fetchDemoFeatures(){
@@ -292,21 +346,8 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
             {
                 // Set the featureslist lwc reactive properties to the first feature in the fetch results list
                 this.featurescolcurrentitem = 0;
-                this.featurename = this.featuresfetchresult[0].featurename;
-                console.log('NewDemoOrgWizard - featurename : ' + this.featurename);
-                this.featureposition = this.featuresfetchresult[0].featureposition;
-                console.log('NewDemoOrgWizard - featureposition : ' + this.featureposition);
-                this.instruction1 = this.featuresfetchresult[0].instruction1;
-                console.log('NewDemoOrgWizard - instruction1 : ' + this.instruction1);
-                this.instruction2 = this.featuresfetchresult[0].instruction2;
-                console.log('NewDemoOrgWizard - instruction2 : ' + this.instruction2);
-                this.videoid = this.featuresfetchresult[0].videoid;
-                console.log('NewDemoOrgWizard - videoid : ' + this.videoid);
-                this.publicdocurl = this.featuresfetchresult[0].publicdocurl;
-                console.log('NewDemoOrgWizard - publicdocurl : ' + this.publicdocurl);
-                this.expertspageurl = this.featuresfetchresult[0].expertspageurl;
-                console.log('NewDemoOrgWizard - expertspageurl : ' + this.expertspageurl);
-
+                this.hasotherfeaturestoshow = true;
+                this.setFeatureItemData();
             }
                                 
         })
@@ -334,6 +375,24 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
             });
 
     }
+
+    setFeatureItemData(){
+        this.featurename = this.featuresfetchresult[this.featurescolcurrentitem].featurename;
+        console.log('NewDemoOrgWizard - featurename : ' + this.featurename);
+        this.featureposition = this.featuresfetchresult[this.featurescolcurrentitem].featureposition;
+        console.log('NewDemoOrgWizard - featureposition : ' + this.featureposition);
+        this.instruction1 = this.featuresfetchresult[this.featurescolcurrentitem].instruction1;
+        console.log('NewDemoOrgWizard - instruction1 : ' + this.instruction1);
+        this.instruction2 = this.featuresfetchresult[this.featurescolcurrentitem].instruction2;
+        console.log('NewDemoOrgWizard - instruction2 : ' + this.instruction2);
+        this.videoid = this.featuresfetchresult[this.featurescolcurrentitem].videoid;
+        console.log('NewDemoOrgWizard - videoid : ' + this.videoid);
+        this.publicdocurl = this.featuresfetchresult[this.featurescolcurrentitem].publicdocurl;
+        console.log('NewDemoOrgWizard - publicdocurl : ' + this.publicdocurl);
+        this.expertspageurl = this.featuresfetchresult[this.featurescolcurrentitem].expertspageurl;
+        console.log('NewDemoOrgWizard - expertspageurl : ' + this.expertspageurl);
+    }
+
 
     initDemoCreated() {
         this.isDemoOrgCreated = true;
@@ -365,8 +424,33 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
             this.isStep3 = true;
         }
         else if(getselectedStep === 'FeaturesStep'){
-            this.initDemoCreated();
-            this.hasPreviousStep = false;
+            console.log('NewDemoOrgWizard - featurescolcurrentitem-bf : ' + this.featurescolcurrentitem);
+            if (this.featurescolcurrentitem > 0)
+            {
+                this.featurescolcurrentitem = this.featurescolcurrentitem - 1;
+                console.log('NewDemoOrgWizard - featurescolcurrentitem : ' + this.featurescolcurrentitem);
+                this.setFeatureItemData();
+                console.log('newDemoOrgWizard.js - this.isDemoOrgCreated-prev->0: ' + this.isDemoOrgCreated);
+            }
+            else
+            {
+                // Set back step to Demo Created lwc
+                this.isDemoOrgCreated = true;
+                this.isFeaturesStep = false;
+                this.selectedStep = 'DemoCreated';
+                this.hasPreviousStep = false;
+                console.log('NewDemoOrgWizard - featurescolcurrentitem - else : ' + this.featurescolcurrentitem);
+                console.log('newDemoOrgWizard.js - this.isDemoOrgCreated-prev-after: ' + this.isDemoOrgCreated);
+            }
+        }
+        else if(getselectedStep === 'LastStep'){
+            this.selectedStep = 'FeaturesStep';
+            this.isFeaturesStep = true;
+            this.isLastStep = false;
+            this.showNextStep = true;
+            this.featurescolcurrentitem = this.featurescolcurrentitem - 1;
+            console.log('NewDemoOrgWizard - featurescolcurrentitem - last step : ' + this.featurescolcurrentitem);
+            this.setFeatureItemData();
         }
     }
 

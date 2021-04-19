@@ -1,0 +1,41 @@
+<template>
+    <div class="slds-p-bottom_large slds-p-left_large parent">
+        <div class="slds-p-bottom_large">
+            <lightning-layout>
+                <lightning-layout-item padding="horizontal-small">
+                    <lightning-icon icon-name="action:share_post" alternative-text="Check" size="small" title="check item"></lightning-icon>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <div class="slds-text-align_left demoreadytxt">
+                        Your Demo org is configured! Now engage with our team so we can help you with the demo and any additional custimizations:
+                </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <br>
+        <div class="logoandbutton">  
+            
+           
+            <img src={slackLogoUrl}>
+            <br>
+            <br>
+            <lightning-button variant="brand" label="Open Slack Channel" title="Primary action" onclick={openSlack} class="slds-m-left_x-small"></lightning-button>
+
+        </div>
+        <br>
+        <b>Last Steps:</b>
+        <br>
+        <ul>
+            <li>
+                <input type="checkbox"> Add any other internal demo participants to the Slack channel<b># team-isv-demo-help</b>
+            </li>
+            <li>
+                <input type="checkbox">Post and mention <b>@channel</b> with the name of your Partner and your demo date/details
+            </li>
+        </ul>
+        <br>
+        
+        
+        
+    </div>
+</template>

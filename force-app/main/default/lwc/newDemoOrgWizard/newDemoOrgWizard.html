@@ -35,7 +35,11 @@
             </template>
 
             <template if:true={isFeaturesStep}>
-                <c-featuresconfigurator featurename={featurename} featureposition={featureposition} instruction1={instruction1} instruction2={instruction2} videoid={videoid} publicdocurl={publicdocurl} expertspageurl={expertspageurl}></c-featuresconfigurator>
+                <c-featuresconfigurator orgurl={orgURL} featurename={featurename} featureposition={featureposition} instruction1={instruction1} instruction2={instruction2} videoid={videoid} publicdocurl={publicdocurl} expertspageurl={expertspageurl}></c-featuresconfigurator>
+            </template>
+
+            <template if:true={isLastStep}>
+                <c-laststep></c-laststep>
             </template>
 
         </div>

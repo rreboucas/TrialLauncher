@@ -1,7 +1,7 @@
 <template>
     <div class="slds-p-bottom_large slds-p-left_large parent">
         <div class="slds-p-bottom_large">
-            <b>{featurename}</b> {featureposition}
+            <b>{featurename}</b> {featureposition}:
         </div>
       
 
@@ -17,7 +17,7 @@
         <br>
         <div>
             <template if:true={showVideoPlayer}>
-                <c-video-Player vidyardid={videoid}></c-video-Player>
+                <iframe src={iframeURL} width="100%" height="300px;" frameborder="0" allowfullscreen></iframe>
             </template>
         </div>
         <div class="slds-p-top_x-small">
