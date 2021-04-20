@@ -15,6 +15,9 @@ coverage/
 # SOQL Query Results
 **/scripts/soql/query-results
 
+# Custom Metadata for Slack Settings
+**/customMetadata/Slack_Settings.Default.md-meta.xml
+
 # Logs
 logs
 *.log
