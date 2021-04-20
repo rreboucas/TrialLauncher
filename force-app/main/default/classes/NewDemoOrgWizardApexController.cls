@@ -46,6 +46,11 @@ public with sharing class NewDemoOrgWizardApexController {
     @AuraEnabled
     public String expertspageurl { get;set; }
 
+    @AuraEnabled
+    public String slackteamid { get;set; }
+    @AuraEnabled
+    public String slackchannelname { get;set; }
+
 
     @AuraEnabled(cacheable=false)
     public static NewDemoOrgWizardApexController createDemoOrg(String firstName, String lastName, String eMail, String country, String templateId, String partnerName, String trialDays, String demoDateTime, List<String> features, String orgLanguage) {
@@ -199,6 +204,15 @@ public with sharing class NewDemoOrgWizardApexController {
 
         return result;
 
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static List<Slack_Settings__mdt> getSlackSettings() {
+
+        //NewDemoOrgWizardApexController rec = new NewDemoOrgWizardApexController();
+        List<Slack_Settings__mdt> lstofSettings = [SELECT Slack_Team_ID__c, Slack_Channel_Name__c FROM Slack_Settings__mdt where Status__c = 'Active' WITH SECURITY_ENFORCED limit 1];
+        System.debug('######## lstofSettings: ' + lstofSettings);
+        return lstofSettings;
     }
 
     @AuraEnabled(cacheable=true)

@@ -33,12 +33,12 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Demo_Feature__c.Instruction_Line_1__c</field>
+        <field>Demo_Feature__c.Instruction_Line_1_Completed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Demo_Feature__c.Instruction_Line_2__c</field>
+        <field>Demo_Feature__c.Instruction_Line_2_Completed__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -146,6 +146,16 @@
         <field>SignupStatus__e.OrgStatus__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Slack_Settings__mdt.Slack_Channel_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Slack_Settings__mdt.Slack_Team_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Demo_Feature__c-Demo Feature Layout</layout>
     </layoutAssignments>
@@ -161,6 +171,13 @@
     <layoutAssignments>
         <layout>Demo_Template__c-Demo Template Layout</layout>
     </layoutAssignments>
+    <layoutAssignments>
+        <layout>Slack_Settings__mdt-Slack Setting Layout</layout>
+    </layoutAssignments>
+    <pageAccesses>
+        <apexPage>videoPlayer</apexPage>
+        <enabled>false</enabled>
+    </pageAccesses>
     <tabVisibilities>
         <tab>Demo_Org__c</tab>
         <visibility>DefaultOn</visibility>

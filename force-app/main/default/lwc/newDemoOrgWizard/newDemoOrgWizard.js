@@ -7,7 +7,14 @@ import { subscribe, unsubscribe, onError, setDebugFlag, isEmpEnabled } from 'lig
 import getSignupStatus from '@salesforce/apex/callSignupAPI.getRealTimeOrgStatus';
 import getFeatures from '@salesforce/apex/NewDemoOrgWizardApexController.getFeaturesSelected';
 import getOrgURL from '@salesforce/apex/NewDemoOrgWizardApexController.getOrgURL';
+import { getRecord } from 'lightning/uiRecordApi';
 
+const FIELDS = [
+    'User.FirstName',
+    'User.LastName',
+    'User.Country',
+    'User.Email',
+];
 
 export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) {
     @api step;
@@ -52,6 +59,7 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
     featurescolcurrentitem;
     hasotherfeaturestoshow;
     orgURL;
+    timer;
 
     subscription = {};
  
@@ -122,6 +130,23 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
             this.subscription = response;
         });
         */
+    }
+
+    @wire(getRecord, { recordId: '$userId', fields: FIELDS })
+    wiredUserInfo({ error, data }) {
+        if (data) {
+            this.user = data;
+            console.log('newDemoOrgWizard.js - user email: ' + this.user.fields.Email.value);
+            console.log('newDemoOrgWizard.js - user Country: ' + this.user.fields.Country.value);
+            console.log('newDemoOrgWizard.js - user First Name: ' + this.user.fields.FirstName.value);
+            console.log('newDemoOrgWizard.js - user Last Name: ' + this.user.fields.LastName.value);
+            this.error = undefined;
+
+            
+        } else if (error) {
+            this.error = error;
+            this.userEmail = undefined;
+        }
     }
 
     storeSelectedFeature(event) {
@@ -266,7 +291,9 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
 
                     // Sets client poller to fetch Signup Request Status:
 
-                    setInterval(() => this.fetchOrgStatus(), 60000);
+                    //setInterval(() => this.fetchOrgStatus(), 60000);
+                    this.timer = setInterval(() => this.fetchOrgStatus(), 60000);
+
                 });
             })
             .catch(error => {
@@ -367,6 +394,7 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
                 if (this.createdOrgStatus === 'Success' && this.isDemoOrgCreated === false) {
                     // Hide step 5 and unhide step 6:
                     this.initDemoCreated();
+                    clearInterval(this.timer);
                 }
             })
             .catch((error) => {
