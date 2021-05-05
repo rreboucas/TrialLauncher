@@ -1,4 +1,4 @@
-import ThirdSicDesc from '@salesforce/schema/DandBCompany.ThirdSicDesc';
+
 import { LightningElement, api } from 'lwc';
 
 export default class ButtonStateful extends LightningElement {

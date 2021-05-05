@@ -18,6 +18,7 @@ const FIELDS = [
 
 export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) {
     @api step;
+    @api localrecordid;
     hasPreviousStep = false;
     showNextStep = true;
     selectedStep = 'Step1';
@@ -67,6 +68,16 @@ export default class NewDemoOrgWizard extends NavigationMixin(LightningElement) 
     connectedCallback() {
 
         this.fetchOrgURL();
+
+        // check if there is a record id to enable New vs. Edit mode:
+
+        if(this.localrecordid)
+        {
+            // Edit Mode
+        }
+        else {
+            // New rec mode
+        }
        
         switch(this.step) {
             case '1':

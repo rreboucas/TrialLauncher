@@ -1,11 +1,25 @@
 {
-  "packageDirectories": [
-    {
-      "path": "force-app",
-      "default": true
+    "packageDirectories": [
+        {
+            "path": "force-app",
+            "default": true,
+            "package": "trial launcher unlocked",
+            "versionName": "Version 1.0",
+            "versionNumber": "1.0.0.NEXT"
+        }
+    ],
+    "namespace": "",
+    "sfdcLoginUrl": "https://login.salesforce.com",
+    "sourceApiVersion": "50.0",
+    "packageAliases": {
+        "trial launcher unlocked": "0Ho5b000000003KCAQ",
+        "trial launcher unlocked@1.0.0-1": "04t5b00000239EQAAY",
+        "trial launcher unlocked@1.0.0-2": "04t5b00000239EVAAY",
+        "trial launcher unlocked@1.0.0-3": "04t5b00000239EaAAI",
+        "trial launcher unlocked@1.0.0-4": "04t5b00000239GRAAY",
+        "trial launcher unlocked@1.0.0-5": "04t5b00000239GWAAY",
+        "trial launcher unlocked@1.0.0-6": "04t5b00000239GgAAI",
+        "trial launcher unlocked@1.0.0-7": "04t5b00000239GlAAI",
+        "trial launcher unlocked@1.0.0-8": "04t5b00000239GqAAI"
     }
-  ],
-  "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "50.0"
 }

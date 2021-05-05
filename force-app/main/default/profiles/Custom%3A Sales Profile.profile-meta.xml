@@ -14,6 +14,18 @@
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TestFactory</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WebServiceGetStatusMockImpl</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WebServiceMockImpl</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>callSignupAPI</apexClass>
         <enabled>false</enabled>
     </classAccesses>
@@ -23,6 +35,10 @@
     </classAccesses>
     <classAccesses>
         <apexClass>schedFetchOrgStatus</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>test_Trial_Launcher_Apex</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
@@ -95,6 +111,11 @@
         <editable>false</editable>
         <field>Demo_Product__c.ISV_Instructions__c</field>
         <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Demo_Product__c.Include_on_All_Demos__c</field>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>

@@ -14,11 +14,31 @@
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>TestFactory</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WebServiceGetStatusMockImpl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>WebServiceMockImpl</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>callSignupAPI</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <classAccesses>
+        <apexClass>postInstallScript</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>schedFetchOrgStatus</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>test_Trial_Launcher_Apex</apexClass>
         <enabled>true</enabled>
     </classAccesses>
     <custom>false</custom>
@@ -26,6 +46,16 @@
         <editable>true</editable>
         <field>Demo_Feature__c.Demo_Product__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Demo_Feature__c.Instruction_Line_1_Completed__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Demo_Feature__c.Instruction_Line_2_Completed__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -83,6 +113,21 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>true</editable>
+        <field>Demo_Product__c.Include_on_All_Demos__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Demo_Product__c.Instruction_Line_1__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Demo_Product__c.Instruction_Line_2__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>false</editable>
         <field>Demo_Product__c.Instructions_Doc__c</field>
         <readable>false</readable>
@@ -122,6 +167,16 @@
         <field>SignupStatus__e.OrgStatus__c</field>
         <readable>false</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Slack_Settings__mdt.Slack_Channel_Name__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Slack_Settings__mdt.Slack_Team_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Demo_Feature__c-Demo Feature Layout</layout>
     </layoutAssignments>
@@ -136,6 +191,9 @@
     </layoutAssignments>
     <layoutAssignments>
         <layout>Demo_Template__c-Demo Template Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
+        <layout>Slack_Settings__mdt-Slack Setting Layout</layout>
     </layoutAssignments>
     <objectPermissions>
         <allowCreate>true</allowCreate>
@@ -182,6 +240,10 @@
         <object>SignupStatus__e</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <pageAccesses>
+        <apexPage>videoPlayer</apexPage>
+        <enabled>true</enabled>
+    </pageAccesses>
     <tabVisibilities>
         <tab>Demo_Org__c</tab>
         <visibility>DefaultOn</visibility>
@@ -192,6 +254,10 @@
     </tabVisibilities>
     <tabVisibilities>
         <tab>Demo_Template__c</tab>
+        <visibility>Hidden</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Trial_Test</tab>
         <visibility>Hidden</visibility>
     </tabVisibilities>
     <userLicense>Salesforce</userLicense>

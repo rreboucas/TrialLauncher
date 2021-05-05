@@ -106,13 +106,11 @@ public with sharing class NewDemoOrgWizardApexController {
 
         HttpResponse response = http.send(request);
         // Parse the JSON response
-        if (response.getStatusCode() != 201) {
-            System.debug('The status code returned was not expected: ' +
-                response.getStatusCode() + ' ' + response.getStatus());
-        } else {
-            System.debug('response.getBody(): ' + response.getBody());
-            strCreateResult = response.getBody();
-        }
+        System.debug('###### response.getStatusCode(): ' + response.getStatusCode());
+        
+        System.debug('response.getBody(): ' + response.getBody());
+        strCreateResult = response.getBody();
+        
 
         if (String.isNotEmpty(strCreateResult))
         {
@@ -157,7 +155,7 @@ public with sharing class NewDemoOrgWizardApexController {
             // Fetch Demo Product records to reconcile with features for insert / populate lookup field:
 
             Map<String, Demo_Product__c> featuresMap = new Map<String, Demo_Product__c>(); 
-            for(Demo_Product__c objFeature : [SELECT Demo_Template__r.Template_ID__c,Id,Instruction_Line_1__c,Instruction_Line_2__c,ISV_Instructions__c,Name,Status__c,Type__c,Video_Id__c FROM Demo_Product__c where Status__c = 'Active' WITH SECURITY_ENFORCED])
+            for(Demo_Product__c objFeature : [SELECT Include_on_All_Demos__c, Demo_Template__r.Template_ID__c,Id,Instruction_Line_1__c,Instruction_Line_2__c,ISV_Instructions__c,Name,Status__c,Type__c,Video_Id__c FROM Demo_Product__c where Status__c = 'Active'])
             { 
                 Demo_Product__c currentProduct = featuresMap.get(objFeature.Name);
                 if (featuresMap.containsKey(objFeature.Name) && currentProduct.Demo_Template__r.Template_ID__c.equalsIgnoreCase(templateId))
@@ -187,6 +185,15 @@ public with sharing class NewDemoOrgWizardApexController {
                     System.debug('######### rec.id: ' + rec.id);
                     ft.Demo_Org__c = rec.id;
                     lstFeatures.add(ft);
+                 }
+                 if (featuresMap.containsKey('Create new Demo App'))
+                 {
+                    Demo_Feature__c ftr = new Demo_Feature__c();
+                    ftr.Name = 'Create new Demo App';
+                    Demo_Product__c dr = featuresMap.get(ftr.Name);
+                    ftr.Demo_Product__c = dr.Id;
+                    ftr.Demo_Org__c = rec.id;
+                    lstFeatures.add(0, ftr);
                  }
                  System.debug('######### lstFeatures: ' + lstFeatures);
                  
@@ -227,7 +234,7 @@ public with sharing class NewDemoOrgWizardApexController {
     public static List<NewDemoOrgWizardApexController> getFeaturesSelected(List<String> listofFeatureIds) {
 
         List<NewDemoOrgWizardApexController> lstFeaturesResult = new List<NewDemoOrgWizardApexController>();
-        List<Demo_Feature__c> lstOfFeatures = [SELECT Id,Demo_Product__r.Category__c,Demo_Product__r.Demo_Template__c,Demo_Product__r.Instructions_Doc__c,Demo_Product__r.Instruction_Line_1__c,Demo_Product__r.Instruction_Line_2__c,Demo_Product__r.ISV_Instructions__c,Demo_Product__r.Name,Demo_Product__r.Status__c,Demo_Product__r.Type__c,Demo_Product__r.Video_Id__c FROM Demo_Feature__c where id in: listofFeatureIds WITH SECURITY_ENFORCED order by Demo_Product__r.Name asc];
+        List<Demo_Feature__c> lstOfFeatures = [SELECT Id,Demo_Product__r.Category__c,Demo_Product__r.Demo_Template__c,Demo_Product__r.Instructions_Doc__c,Demo_Product__r.Instruction_Line_1__c,Demo_Product__r.Instruction_Line_2__c,Demo_Product__r.ISV_Instructions__c,Demo_Product__r.Name,Demo_Product__r.Status__c,Demo_Product__r.Type__c,Demo_Product__r.Video_Id__c FROM Demo_Feature__c where id in: listofFeatureIds order by Demo_Product__r.Name asc];
         System.debug('######## lstOfFeatures: ' + lstOfFeatures);
         if (!lstOfFeatures.isEmpty())
         {
@@ -271,7 +278,7 @@ public with sharing class NewDemoOrgWizardApexController {
     @AuraEnabled(cacheable=true)
     public static AggregateResult[] getActiveFeatures() {
 
-        AggregateResult[] lstOfFeatures = [SELECT Name FROM Demo_Product__c where Status__c = 'Active' WITH SECURITY_ENFORCED GROUP BY Name order by Name];
+        AggregateResult[] lstOfFeatures = [SELECT Name FROM Demo_Product__c where Status__c = 'Active' and Include_on_All_Demos__c = false WITH SECURITY_ENFORCED GROUP BY Name order by Name];
         System.debug('######## lstOfFeatures: ' + lstOfFeatures);
         return lstOfFeatures;
     }
@@ -285,13 +292,6 @@ public with sharing class NewDemoOrgWizardApexController {
         return urler;
     }
 
-    private static String getUUID()
-    {
-        Blob b = Crypto.GenerateAESKey(128);
-        String h = EncodingUtil.ConvertTohex(b);
-        String guid = h.SubString(0,8)+ '-' + h.SubString(8,12) + '-' + h.SubString(12,16) + '-' + h.SubString(16,20) + '-' + h.substring(20);
-        system.debug(guid);
-        return guid;
-    }
+
     
 }

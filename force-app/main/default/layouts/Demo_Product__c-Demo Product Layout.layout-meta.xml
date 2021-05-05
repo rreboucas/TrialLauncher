@@ -35,6 +35,10 @@
                 <behavior>Edit</behavior>
                 <field>Instruction_Line_2__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Include_on_All_Demos__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

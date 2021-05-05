@@ -18,4 +18,10 @@ public with sharing class SignupResponse {
             return (SignupResponse) System.JSON.deserialize(json, SignupResponse.class);
         }
 
+        /*public static List<SignupResponse> parseList(String json) {
+            return (List<SignupResponse>) System.JSON.deserialize(json, List<SignupResponse>.class);
+        }*/
+
+
+
 }
